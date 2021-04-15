@@ -1,92 +1,111 @@
+using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
+using System.Windows.Input;
 using MobileTestXF.Model;
 using Xamarin.Forms;
+
+
+
 
 namespace MobileTestXF.ViewModel
 {
     public class DetailNewsViewModel : BindableObject
     {
-        public DetailNewsViewModel(string title, string author, string publishedAt, string urlToImage,string content)
+        public ICommand GoToURL { get; }
+        public DetailNewsViewModel(string title, string author, string publishedAt, string urlToImage,string content, string url)
         {
             Title = title;
             Content = content;
             Author = author;
             PublishedAt = publishedAt;
             UrlToImage = urlToImage;
+            Url = url;
+            GoToURL = new Command(OnWeb);
         }
 
 
-        private string title;
+        private void OnWeb()
+        {
+            Device.OpenUri(new Uri(Url));
+        }
+        
+        
+
+        private string _title;
 
         public string Title
         {
-            get { return title; }
+            get => _title;
             set
             {
-                if (title != value)
-                {
-                    title = value;
-                    OnPropertyChanged();
-                }
+                if (_title == value) return;
+                _title = value;
+                OnPropertyChanged();
             }
         }
 
-        private string content;
+        private string _content;
 
         public string Content
         {
-            get { return content; }
+            get => _content;
             set
             {
-                if (content != value)
-                {
-                    content = value;
-                    OnPropertyChanged();
-                }
+                if (_content == value) return;
+                _content = value;
+                OnPropertyChanged();
             }
         }
 
-        private string author;
+        private string _author;
 
         public string Author
         {
-            get { return author; }
+            get => _author;
             set
             {
-                if (author != value)
-                {
-                    author = value;
-                    OnPropertyChanged();
-                }
+                if (_author == value) return;
+                _author = value;
+                OnPropertyChanged();
             }
         }
 
-        private string publishedAt;
+        private string _publishedAt;
 
         public string PublishedAt
         {
-            get { return publishedAt; }
+            get => _publishedAt;
             set
             {
-                if (publishedAt != value)
-                {
-                    publishedAt = value;
-                    OnPropertyChanged();
-                }
+                if (_publishedAt == value) return;
+                _publishedAt = value;
+                OnPropertyChanged();
             }
         }
 
-        private string urlToImage;
+        private string _urlToImage;
 
         public string UrlToImage
         {
-            get { return urlToImage; }
+            get => _urlToImage;
             set
             {
-                if (urlToImage != value)
-                {
-                    urlToImage = value;
-                    OnPropertyChanged();
-                }
+                if (_urlToImage == value) return;
+                _urlToImage = value;
+                OnPropertyChanged();
+            }
+        }
+        private string _url;
+
+        public string Url
+        {
+            get => _url;
+            set
+            {
+                if (_url == value) return;
+                _url = value;
+                OnPropertyChanged();
             }
         }
     }

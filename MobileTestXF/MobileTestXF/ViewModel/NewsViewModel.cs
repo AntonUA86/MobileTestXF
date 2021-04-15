@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -16,6 +18,8 @@ namespace MobileTestXF.ViewModel
     {
         private readonly INewsService _newsService;
 
+        
+        
         private ObservableCollection<News> _observableCollectionNews;
         public ObservableCollection<News> ObservableCollectionNews
         {
@@ -59,10 +63,14 @@ namespace MobileTestXF.ViewModel
         
         public NewsViewModel()
         {
+
+         
             _newsService = new NewsService();
-            
-            ObservableCollectionNews =  new ObservableCollection<News>(_newsService.GetAllNewsAsync().Result);
-            
+
+
+            ObservableCollectionNews =
+                new ObservableCollection<News>(ParserNews.GetNews());
+
             NavigationToDetailNews = new Command(async  () => await GetListview());
 
             SearchCommand = new Command(SearchCommandExecute);
@@ -76,13 +84,13 @@ namespace MobileTestXF.ViewModel
                 new DetailNews()
                 {
                     BindingContext = new DetailNewsViewModel(SelectedNews.Title, SelectedNews.Author,
-                        SelectedNews.PublishedAt, SelectedNews.UrlToImage, SelectedNews.Content)
+                        SelectedNews.PublishedAt, SelectedNews.UrlToImage, SelectedNews.Content, SelectedNews.Url)
                 });
         }
         
         private void SearchCommandExecute()
         {
-            var tempRecords = ObservableCollectionNews.Where(c=>c.Title.Contains(Text));
+            var tempRecords = ParserNews.GetNewsSearch(Text);
             ObservableCollectionNews = new ObservableCollection<News>(tempRecords);
             
         }

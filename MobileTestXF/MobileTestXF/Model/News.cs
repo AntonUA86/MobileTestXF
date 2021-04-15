@@ -5,6 +5,8 @@ namespace MobileTestXF.Model
     public class News
     {
         
+        [JsonProperty("url")]
+        public  string Url { get; set; }
         [JsonProperty("author")]
         public string Author { get; set; }
         [JsonProperty("title")]

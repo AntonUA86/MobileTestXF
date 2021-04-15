@@ -14,7 +14,9 @@
                        VerticalOptions="Center" />
                 <Image Source="{Binding UrlToImage}" /> 
                 <Label Text="{Binding Content}" />
+                <Button Text="Читать полностью" Command="{Binding GoToURL}"/>
             </StackLayout>
+      
     </ContentPage.Content>
 </ContentPage>
 
