@@ -1,12 +1,19 @@
+using Newtonsoft.Json;
+
 namespace MobileTestXF.Model
 {
     public class News
     {
-        public string Author { get; set; }
-        public string Title { get; set; }
-        public string PublishedAt { get; set; }
-        public string UrlToImage { get; set; } 
         
+        [JsonProperty("author")]
+        public string Author { get; set; }
+        [JsonProperty("title")]
+        public string Title { get; set; }
+        [JsonProperty("publishedAt")]
+        public string PublishedAt { get; set; }
+        [JsonProperty("urlToImage")]
+        public string UrlToImage { get; set; }
+        [JsonProperty("content")]
         public  string Content { get; set; }
 
     }

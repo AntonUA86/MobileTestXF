@@ -1,8 +1,11 @@
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using MobileTestXF.Model;
+using MobileTestXF.Services;
 using MobileTestXF.View;
 using Xamarin.Forms;
 using News = MobileTestXF.Model.News;
@@ -11,8 +14,19 @@ namespace MobileTestXF.ViewModel
 {
     public class NewsViewModel : BindableObject
     {
-        public ObservableCollection<News> ObservableCollectionNews { get; set; } 
-        
+        private readonly INewsService _newsService;
+
+        private ObservableCollection<News> _observableCollectionNews;
+        public ObservableCollection<News> ObservableCollectionNews
+        {
+            get => _observableCollectionNews;
+            set
+            {
+                _observableCollectionNews = value;
+                OnPropertyChanged();
+            }
+        }
+
         public ICommand NavigationToDetailNews { get; }
         
         public ICommand SearchCommand { get; }
@@ -43,12 +57,11 @@ namespace MobileTestXF.ViewModel
             }
         }
         
-
         public NewsViewModel()
-            
         {
-     
-            ObservableCollectionNews = new ObservableCollection<News>(ParserNews.GetNews());
+            _newsService = new NewsService();
+            
+            ObservableCollectionNews =  new ObservableCollection<News>(_newsService.GetAllNewsAsync().Result);
             
             NavigationToDetailNews = new Command(async  () => await GetListview());
 
@@ -69,7 +82,7 @@ namespace MobileTestXF.ViewModel
         
         private void SearchCommandExecute()
         {
-            var tempRecords = ObservableCollectionNews.Where(c=>c.Author.Contains(Text));
+            var tempRecords = ObservableCollectionNews.Where(c=>c.Title.Contains(Text));
             ObservableCollectionNews = new ObservableCollection<News>(tempRecords);
             
         }

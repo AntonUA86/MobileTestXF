@@ -7,7 +7,7 @@ using Newtonsoft.Json.Linq;
 
 namespace MobileTestXF.Model
 {
-    public static class ParserNews
+    public  class ParserNews
     {
 
         public static List<News> GetNews()
