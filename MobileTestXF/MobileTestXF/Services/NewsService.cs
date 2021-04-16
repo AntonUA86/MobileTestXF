@@ -8,25 +8,23 @@ using System.Threading.Tasks;
 using MobileTestXF.Model;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Xamarin.Forms;
 
 
 namespace MobileTestXF.Services
 {
-    public class NewsService : INewsService
+    public  class NewsService : INewsService
     {
-        public async Task<IEnumerable<News>> GetAllNewsAsync()
-        {     
-           
-            var url = "https://newsapi.org/v2/everything?q=Apple&from=2021-04-13&sortBy=popularity&apiKey=713404e7bc6e4e7aaccdd71b86faefb2";
+        public  async  Task<IEnumerable<News>> GetAllNewsAsync()
+        {
 
-           
-         
-            try
-            {
-              using (var client = new HttpClient())
+            var url =
+                "https://newsapi.org/v2/everything?q=Apple&from=2021-04-13&sortBy=popularity&apiKey=713404e7bc6e4e7aaccdd71b86faefb2";
+       
+            using (var client = new HttpClient())
             {
                 var listNews = new List<News>();
-                var response =  await client.GetAsync(url);
+                var response = await client.GetAsync(url);
                 var results = JObject.Parse(await
                     response.Content.ReadAsStringAsync())["articles"];
                 var feed = JsonConvert.DeserializeObject<IEnumerable<News>>(results.ToString());
@@ -34,21 +32,33 @@ namespace MobileTestXF.Services
                 return listNews;
 
             }
-            }
-            catch (Exception e)
-            {
-              Debug.Fail(e.Message);
-                throw;
-            }
-           
 
+ 
         }
-         
-     
 
-        public Task<IEnumerable<News>> GetNewsBySearchAsync(string request)
+        public async  Task<IEnumerable<News>> GetNewsBySearchAsync(string request)
         {
-            throw new System.NotImplementedException();
+            var url =
+                $"https://newsapi.org/v2/everything?q={request}&from=2021-04-13&sortBy=popularity&apiKey=713404e7bc6e4e7aaccdd71b86faefb2";
+
+            using (var client = new HttpClient())
+            {
+                var listNews = new List<News>();
+                var response = await client.GetAsync(url);
+                var results = JObject.Parse(await
+                    response.Content.ReadAsStringAsync())["articles"];
+                var feed = JsonConvert.DeserializeObject<IEnumerable<News>>(results.ToString());
+                listNews.AddRange(feed.ToArray());
+                return listNews;
+            }
         }
     }
 }
+        
+            
+         
+           
+
+        
+         
+     

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using MobileTestXF.View;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace MobileTestXF.Model
@@ -22,16 +23,9 @@ namespace MobileTestXF.Model
                 using (var reader = new StreamReader(response))
                 {
                     var data = JObject.Parse(reader.ReadLine())["articles"];
-                    foreach (var info in data)
-                        listNews.Add(new News
-                        {
-                            Url = info["url"].Value<string>(),
-                            Title = info["title"].Value<string>(),
-                            Author = info["author"].Value<string>(),
-                            PublishedAt = info["publishedAt"].Value<string>(),
-                            UrlToImage = info["urlToImage"].Value<string>(),
-                            Content = info["content"].Value<string>()
-                        });
+                    var feed = JsonConvert.DeserializeObject<IEnumerable<News>>(data.ToString());
+                    listNews.AddRange(feed.ToArray());
+                    return listNews;
                 }
             }
 
