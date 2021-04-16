@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace MobileTestXF.Model
         {
             var listNews = new List<News>();
             var url =
-                "https://newsapi.org/v2/everything?q=Apple&from=2021-04-13&sortBy=popularity&apiKey=713404e7bc6e4e7aaccdd71b86faefb2";
+                "https://newsapi.org/v2/everything?q=BBC&from=2021-04-13&sortBy=popularity&apiKey=713404e7bc6e4e7aaccdd71b86faefb2";
 
             using (WebClient client = new WebClient())
             {
@@ -36,7 +37,7 @@ namespace MobileTestXF.Model
 
             return listNews;
         }
-
+       
         public static List<News> GetNewsSearch(string text)
         {
           
@@ -52,10 +53,13 @@ namespace MobileTestXF.Model
                     var data = JObject.Parse(reader.ReadLine())["articles"];
                     foreach (var info in data)
                     {
-                        if(info["title"].Value<string>().ToLower() == text.ToLower())
                         listNews.Add(new News
                         {
                             Title = info["title"].Value<string>(),
+                            Author = info["author"].Value<string>(),
+                            PublishedAt = info["publishedAt"].Value<string>(),
+                            UrlToImage = info["urlToImage"].Value<string>(),
+                            Content = info["content"].Value<string>()
                         });
                     }
                 }

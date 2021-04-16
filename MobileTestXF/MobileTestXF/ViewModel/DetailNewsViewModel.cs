@@ -39,7 +39,6 @@ namespace MobileTestXF.ViewModel
             get => _title;
             set
             {
-                if (_title == value) return;
                 _title = value;
                 OnPropertyChanged();
             }
@@ -52,7 +51,6 @@ namespace MobileTestXF.ViewModel
             get => _content;
             set
             {
-                if (_content == value) return;
                 _content = value;
                 OnPropertyChanged();
             }
@@ -65,7 +63,6 @@ namespace MobileTestXF.ViewModel
             get => _author;
             set
             {
-                if (_author == value) return;
                 _author = value;
                 OnPropertyChanged();
             }
@@ -78,7 +75,6 @@ namespace MobileTestXF.ViewModel
             get => _publishedAt;
             set
             {
-                if (_publishedAt == value) return;
                 _publishedAt = value;
                 OnPropertyChanged();
             }
@@ -91,7 +87,6 @@ namespace MobileTestXF.ViewModel
             get => _urlToImage;
             set
             {
-                if (_urlToImage == value) return;
                 _urlToImage = value;
                 OnPropertyChanged();
             }
@@ -103,7 +98,6 @@ namespace MobileTestXF.ViewModel
             get => _url;
             set
             {
-                if (_url == value) return;
                 _url = value;
                 OnPropertyChanged();
             }

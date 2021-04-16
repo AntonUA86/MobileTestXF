@@ -16,16 +16,15 @@
             SelectedItem="{Binding SelectedNews, Mode=TwoWay}"
             SelectionChangedCommand="{Binding NavigationToDetailNews}"
             SelectionMode="Single"
-           
-            >
+        >
             <CollectionView.Header>
                 <StackLayout>
-                    <SearchBar HorizontalOptions="Fill"
-                           VerticalOptions="CenterAndExpand"
-                           Placeholder="Поиск"
-                           Text="{Binding Text}"
-                           SearchCommand="{Binding SearchCommand}"
-                    />
+                    <SearchBar x:Name="SearchBar" 
+                               Placeholder="Поиск" 
+                               SearchCommand="{Binding SearchCommand}" 
+                               SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}"
+                               Text="{Binding SearchText, Mode=TwoWay}" />
+
                 </StackLayout>
             </CollectionView.Header>
             <CollectionView.ItemTemplate>

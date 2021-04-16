@@ -18,25 +18,28 @@ namespace MobileTestXF.ViewModel
     {
         private readonly INewsService _newsService;
 
-        
-        
-        private ObservableCollection<News> _observableCollectionNews;
+
+
+        private ObservableCollection<News> _observableCollectionNews = new ObservableCollection<News>();
         public ObservableCollection<News> ObservableCollectionNews
         {
-            get => _observableCollectionNews;
+            get => _observableCollectionNews ;
             set
             {
+                
                 _observableCollectionNews = value;
                 OnPropertyChanged();
             }
         }
+        
 
         public ICommand NavigationToDetailNews { get; }
-        
-        public ICommand SearchCommand { get; }
 
-       
+
+        public ICommand SearchCommand { get; }
+  
         
+        public  ICommand  TestCommand { get; }
         private News _selectedNews;
 
         public News SelectedNews
@@ -49,34 +52,37 @@ namespace MobileTestXF.ViewModel
             }
         }
 
-        private string _text;
+        private string _searchText;
 
-        public string Text
+        public string SearchText
         {
-            get => _text;
+            get => _searchText;
             set
             {
-                _text = value;
+                _searchText = value;
                 OnPropertyChanged();
             }
         }
-        
+
+     
         public NewsViewModel()
         {
 
-         
+   
             _newsService = new NewsService();
-
+            
 
             ObservableCollectionNews =
                 new ObservableCollection<News>(ParserNews.GetNews());
 
             NavigationToDetailNews = new Command(async  () => await GetListview());
 
-            SearchCommand = new Command(SearchCommandExecute);
+            SearchCommand = new Command(Test);
+
+        
 
         }
-
+       
 
         async Task GetListview()
         {
@@ -87,20 +93,29 @@ namespace MobileTestXF.ViewModel
                         SelectedNews.PublishedAt, SelectedNews.UrlToImage, SelectedNews.Content, SelectedNews.Url)
                 });
         }
+
+        public void Test()
+        {
+  
+            ObservableCollectionNews.Clear();
+            ObservableCollectionNews = new ObservableCollection<News>(ParserNews.GetNewsSearch(SearchText));
+        }
+   
         
         private void SearchCommandExecute()
         {
-            var tempRecords = ParserNews.GetNewsSearch(Text);
-            ObservableCollectionNews = new ObservableCollection<News>(tempRecords);
-            
+       
+          var tempRecords = ParserNews.GetNewsSearch(SearchText);
+          if (SearchText.Length >= 3)
+          {
+              ObservableCollectionNews.Clear();
+              var responseNews = ObservableCollectionNews.Where(c => c.Title.ToLower().Contains(SearchText.ToLower())).ToList();
+              foreach (var news in responseNews)
+                  ObservableCollectionNews.Add(news);
+          }
+
+
         }
-  
-        
-      
-      
-      
-   
-        
-        
+     
     }
 }
