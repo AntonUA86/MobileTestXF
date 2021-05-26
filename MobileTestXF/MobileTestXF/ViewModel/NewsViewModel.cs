@@ -1,14 +1,10 @@
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Net.Http;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using MobileTestXF.Model;
 using MobileTestXF.Services;
 using MobileTestXF.View;
+using Prism.Navigation;
 using Xamarin.Forms;
 using News = MobileTestXF.Model.News;
 
@@ -16,8 +12,8 @@ namespace MobileTestXF.ViewModel
 {
     public class NewsViewModel : BindableObject
     {
-        private NewsService _newsService = new NewsService();
-
+        private readonly INewsService _newsService;
+        private readonly INavigationService _navigationService;
 
         private ObservableCollection<News> _observableCollectionNews;
         public ObservableCollection<News> ObservableCollectionNews
@@ -25,19 +21,18 @@ namespace MobileTestXF.ViewModel
             get => _observableCollectionNews ;
             set
             {
-                
                 _observableCollectionNews = value;
                 OnPropertyChanged();
             }
         }
 
-        #region Command 
+        #region Command
         public ICommand NavigationToDetailNews { get; }
 
 
         public ICommand SearchCommand { get; }
-  
-        
+
+
         public  ICommand  GetDataCommand { get; }
         #endregion
 
@@ -68,46 +63,45 @@ namespace MobileTestXF.ViewModel
         }
 
         #endregion
-        
+
 
         #endregion
 
-
-
-     
-        public NewsViewModel()
+        public NewsViewModel(INavigationService navigationService)
         {
-            ObservableCollectionNews =
-                new ObservableCollection<News>();
-            
+            _navigationService = navigationService;
+
+            ObservableCollectionNews = new ObservableCollection<News>();
+
             NavigationToDetailNews = new Command(async  () => await GetListview());
 
             SearchCommand = new Command(async () => await LoadDataSearchResult());
 
-            GetDataCommand = new Command(async () => await LoadData());
+            GetDataCommand = new Command(LoadData);
             GetDataCommand.Execute(null);
-   
 
         }
 
         private async Task LoadDataSearchResult()
         {
             var result = await _newsService.GetNewsBySearchAsync(SearchText);
-            ObservableCollectionNews.Clear();    
+            ObservableCollectionNews.Clear();
             foreach (var news in result)
                 ObservableCollectionNews.Add(news);
-        } 
-        
-
-        private async Task LoadData()
-        {
-           var result = await _newsService.GetAllNewsAsync();
-     
-           foreach (var news in result)
-               ObservableCollectionNews.Add(news);
-          
         }
 
+        private void LoadData()
+        {
+           var result =  Enumerable.Range(1, 20).Select(i => new News
+           {
+               Title = "Vasy",
+               Content = "Hello Vasy"
+           });
+
+           foreach (var news in result)
+               ObservableCollectionNews.Add(news);
+
+        }
 
         async Task GetListview()
         {
@@ -118,6 +112,5 @@ namespace MobileTestXF.ViewModel
                         SelectedNews.PublishedAt, SelectedNews.UrlToImage, SelectedNews.Content, SelectedNews.Url)
                 });
         }
-        
     }
 }

@@ -1,24 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace MobileTestXF.View
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class DetailNews : ContentPage
+    public partial class DetailNews
     {
-      
-      
         public DetailNews()
         {
-      
             InitializeComponent();
-            
         }
     }
 }

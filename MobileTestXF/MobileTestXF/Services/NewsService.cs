@@ -1,26 +1,19 @@
-
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
 using MobileTestXF.Model;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Xamarin.Forms;
-
 
 namespace MobileTestXF.Services
 {
     public  class NewsService : INewsService
     {
-        public  async  Task<IEnumerable<News>> GetAllNewsAsync()
+        public async Task<IEnumerable<News>> GetAllNewsAsync()
         {
+            string url = "https://newsapi.org/v2/everything?q=microsoft&from=2021-04-26&sortBy=publishedAt&apiKey=7bf0c6a6007c439491f6f4f84a6f02fc";
 
-            var url =
-                "https://newsapi.org/v2/everything?q=Apple&from=2021-04-13&sortBy=popularity&apiKey=713404e7bc6e4e7aaccdd71b86faefb2";
-       
             using (var client = new HttpClient())
             {
                 var listNews = new List<News>();
@@ -30,16 +23,13 @@ namespace MobileTestXF.Services
                 var feed = JsonConvert.DeserializeObject<IEnumerable<News>>(results.ToString());
                 listNews.AddRange(feed.ToArray());
                 return listNews;
-
             }
-
- 
         }
 
         public async  Task<IEnumerable<News>> GetNewsBySearchAsync(string request)
         {
             var url =
-                $"https://newsapi.org/v2/everything?q={request}&from=2021-04-13&sortBy=popularity&apiKey=713404e7bc6e4e7aaccdd71b86faefb2";
+                $"https://newsapi.org/v2/everything?q={request}&from=2021-04-13&sortBy=popularity&apiKey=7bf0c6a6007c439491f6f4f84a6f02fc";
 
             using (var client = new HttpClient())
             {
@@ -54,11 +44,11 @@ namespace MobileTestXF.Services
         }
     }
 }
-        
-            
-         
-           
 
-        
-         
-     
+
+
+
+
+
+
+

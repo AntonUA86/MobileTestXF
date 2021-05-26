@@ -1,18 +1,13 @@
 using System;
-using System.Diagnostics;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using MobileTestXF.Model;
 using Xamarin.Forms;
-
-
-
 
 namespace MobileTestXF.ViewModel
 {
     public class DetailNewsViewModel : BindableObject
     {
-        public ICommand GoToURL { get; }
+        private ICommand GoToUrl { get; }
+
         public DetailNewsViewModel(string title, string author, string publishedAt, string urlToImage,string content, string url)
         {
             Title = title;
@@ -21,16 +16,13 @@ namespace MobileTestXF.ViewModel
             PublishedAt = publishedAt;
             UrlToImage = urlToImage;
             Url = url;
-            GoToURL = new Command(OnWeb);
+            GoToUrl = new Command(OnWeb);
         }
-
 
         private void OnWeb()
         {
             Device.OpenUri(new Uri(Url));
         }
-        
-        
 
         private string _title;
 

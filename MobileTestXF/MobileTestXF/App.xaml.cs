@@ -1,19 +1,14 @@
-﻿using System;
-using MobileTestXF.View;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
-
-[assembly: XamlCompilation(XamlCompilationOptions.Compile)]
+﻿using MobileTestXF.View;
+using MobileTestXF.ViewModel;
+using Prism.Ioc;
+using Prism.Plugin.Popups;
 
 namespace MobileTestXF
 {
-    public partial class App : Application
+    public partial class App
     {
         public App()
         {
-            InitializeComponent();
-
-            MainPage = new NavigationPage(new NewsPage());
         }
 
         protected override void OnStart()
@@ -29,6 +24,18 @@ namespace MobileTestXF
         protected override void OnResume()
         {
             // Handle when your app resumes
+        }
+
+        protected override async void OnInitialized()
+        {
+            InitializeComponent();
+
+           await NavigationService.NavigateAsync(nameof(NewsPage));
+        }
+
+        protected override void RegisterTypes(IContainerRegistry containerRegistry)
+        {
+            containerRegistry.RegisterForNavigation<NewsPage, NewsViewModel>();
         }
     }
 }
